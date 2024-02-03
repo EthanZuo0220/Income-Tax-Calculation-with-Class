@@ -18,11 +18,11 @@ public class TaxTableTools {
 
 	// TODO: Write a void setter method that sets new values for the private
 	// salary and tax_rate tables to override default salary and tax_rate tables
-	// ***********************************************************************
 	public void setTaxTable(int[] ranges, int[] rates) {
         salaryRanges = ranges;
         taxRates = rates;
     }
+	// ***********************************************************************	
 
 	// TODO: Method to get a tax rate from salary table based on income
 	public double getTaxRate(double annualIncome) {
@@ -66,9 +66,9 @@ public class TaxTableTools {
 		while (true) {
 			System.out.print("Enter annual income (-1 to exit): ");
 			double annualIncome = input.nextDouble();
-			double taxRate = 0;
 			if (annualIncome == -1) break;
 			double taxToPay = taxTableTools.calculateTax(annualIncome);
+			double taxRate = taxTableTools.getTaxRate(annualIncome);
 			System.out.println("Annual Income: (" + annualIncome + ") Tax rate: (" + taxRate + ") Tax to pay: (" + taxToPay + ")");
 		}
 		System.out.println("Goodbye!");
