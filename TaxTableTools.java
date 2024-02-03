@@ -11,8 +11,8 @@ public class TaxTableTools {
 
 	// TODO: Implements Default constructor that initializes the private salary and tax_rate tables
 	public TaxTableTools() {
-		salaryRanges = new int[]{11000, 44725, 95375, 182100, 231250, 578125, Integer.MAX_VALUE};
-        taxRates = new int[]{10, 12, 22, 24, 32, 35, 37};
+		salaryRanges = new int[]{0, 11000, 44725, 95375, 182100, 231250, 578125, Integer.MAX_VALUE};
+        taxRates = new int[]{0, 10, 12, 22, 24, 32, 35, 37};
 	}
 	// ***********************************************************************
 
@@ -28,7 +28,6 @@ public class TaxTableTools {
 	public double getTaxRate(double annualIncome) {
 		double result = 0;
 		for (int i = 0; i < salaryRanges.length; i++) {
-			
 			if (annualIncome <= salaryRanges[i]) {
                 result = ((double )taxRates[i]) / 100 ;
 				break;
@@ -38,15 +37,27 @@ public class TaxTableTools {
 	}
 
     // TODO: Method to get a tax owned based on income and tax rate
-	public double calculateTax(double annualIncome, double taxRate) {
-		return annualIncome * taxRate;
+	public double calculateTax(double annualIncome) {
+		double result = 0;
+		double temp = annualIncome;
+		int index = salaryRanges.length - 1;
+		while(temp != 0){
+			if(temp > salaryRanges[index]) {
+				double taxRate = getTaxRate(temp);
+				result += (temp - salaryRanges[index]) * taxRate;
+				//System.out.println(temp + " - " + salaryRanges[index] + " = "+ (temp - salaryRanges[index]) + " * " + taxRate + " = " + (temp - salaryRanges[index]) * taxRate);
+				temp = salaryRanges[index];
+			}
+			index--;	
+		}
+		return result;
 	}
 	public static void main(String[] args) {
 		// TODO: Add your code here for interactive console mode
         Scanner input = new Scanner(System.in);
 		// Salary and tax rate table
-		int[] ranges = new int[]{11000, 44725, 95375, 182100, 231250, 578125, Integer.MAX_VALUE};
-        int[] rates = new int[]{10, 12, 22, 24, 32, 35, 37};
+		int[] ranges = new int[]{0, 11000, 44725, 95375, 182100, 231250, 578125, Integer.MAX_VALUE};
+        int[] rates = new int[]{0, 10, 12, 22, 24, 32, 35, 37};
 		// Create an instance of the class with default salary and tax_rate tables
 		TaxTableTools taxTableTools = new TaxTableTools();
 		// override default salary and tax_rate tables
@@ -57,8 +68,7 @@ public class TaxTableTools {
 			double annualIncome = input.nextDouble();
 			double taxRate = 0;
 			if (annualIncome == -1) break;
-			taxRate = taxTableTools.getTaxRate(annualIncome);
-			double taxToPay = taxTableTools.calculateTax(annualIncome, taxRate);
+			double taxToPay = taxTableTools.calculateTax(annualIncome);
 			System.out.println("Annual Income: (" + annualIncome + ") Tax rate: (" + taxRate + ") Tax to pay: (" + taxToPay + ")");
 		}
 		System.out.println("Goodbye!");
